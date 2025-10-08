@@ -8,9 +8,8 @@ __pycache__/
 # IDE
 .idea
 
-# Test Date and Outputs
+# dynamic Test Data
 test-data/
-test-data-gl/
 
 # direnv
 .envrc
