@@ -41,7 +41,7 @@ async function postResults(
   metadataFieldMapping,
   resultTypesInput,
   details,
-  detailsResultTypesInput
+  detailsResultTypesInput,
 ) {
   const results = await extractResults(xmls);
   if (results.total_tests == 0) {
@@ -67,7 +67,7 @@ async function postResults(
     metadataFieldMapping,
     selectedResultTypes,
     details,
-    detailsResultTypesInput
+    detailsResultTypesInput,
   );
   await gha.summary.write();
 }
@@ -116,7 +116,7 @@ async function extractResults(xmls) {
     // Check if testsuites exists and has testsuite
     if (!xml.testsuites || !xml.testsuites.testsuite) {
       console.warn(
-        `Skipping file ${filePath}: Invalid XML structure - missing testsuites or testsuite`
+        `Skipping file ${filePath}: Invalid XML structure - missing testsuites or testsuite`,
       );
       continue;
     }
@@ -187,7 +187,7 @@ async function extractResults(xmls) {
 
   // Add metadata parsing errors for suites that couldn't parse metadata
   for (const [suiteName, suiteResults] of Object.entries(
-    multiSuiteResults.suites
+    multiSuiteResults.suites,
   )) {
     if (
       suiteResults.metadata &&
@@ -217,7 +217,7 @@ async function addResults(
   metadataFieldMapping,
   selectedResultTypes,
   details,
-  detailsResultTypesInput
+  detailsResultTypesInput,
 ) {
   gha.summary.addHeading(title);
 
@@ -230,7 +230,7 @@ async function addResults(
       metadataFieldMapping,
       selectedResultTypes,
       details,
-      detailsResultTypesInput
+      detailsResultTypesInput,
     );
   } else {
     // No suites found, use aggregated results (backward compatibility)
@@ -246,7 +246,7 @@ function addMultiSuiteResults(
   metadataFieldMapping,
   selectedResultTypes,
   details,
-  detailsResultTypesInput
+  detailsResultTypesInput,
 ) {
   if (summary) {
     // Test summary section
@@ -264,7 +264,7 @@ function addMultiSuiteResults(
       .filter((t) => !!t);
     const allowedForLinks = new Set(resultTypes);
     detailedResultTypesForLinks = detailedResultTypesForLinks.filter((t) =>
-      allowedForLinks.has(t)
+      allowedForLinks.has(t),
     );
     if (!detailedResultTypesForLinks.length) {
       detailedResultTypesForLinks = ["failed", "error"];
@@ -275,7 +275,7 @@ function addMultiSuiteResults(
       metadataFields,
       metadataFieldMapping,
       selectedResultTypes,
-      detailedResultTypesForLinks
+      detailedResultTypesForLinks,
     );
   }
 
@@ -294,7 +294,7 @@ function addMultiSuiteResults(
   }
 
   const hasAnyIssues = Object.values(results.suites).some((suiteResults) =>
-    hasRelevantResults(suiteResults, detailedResultTypes)
+    hasRelevantResults(suiteResults, detailedResultTypes),
   );
   if (detailsEnabled && hasAnyIssues) {
     gha.summary.addHeading("Test Details", 2);
@@ -328,12 +328,12 @@ function addSingleSuiteResults(results, summary, selectedResultTypes) {
         addDetailsWithCodeBlock(
           gha.summary,
           gha.summary.wrap("code", result.id),
-          result.msg
+          result.msg,
         );
       } else {
         gha.summary.addDetails(
           gha.summary.wrap("code", result.id),
-          "\n\n:heavy_check_mark: Passed"
+          "\n\n:heavy_check_mark: Passed",
         );
       }
     }
@@ -343,7 +343,7 @@ function addSingleSuiteResults(results, summary, selectedResultTypes) {
 function addOverallSummary(results, selectedResultTypes) {
   gha.summary.addRaw(
     `Ran ${results.total_tests} tests in ${prettyDuration(results.total_time)}`,
-    true
+    true,
   );
 
   var rows = [["Result", "Amount"]];
@@ -364,7 +364,7 @@ function addSuiteTable(
   metadataFields,
   metadataFieldMapping,
   selectedResultTypes,
-  detailedResultTypesForLinks
+  detailedResultTypesForLinks,
 ) {
   // Parse metadata field mapping
   const fieldMapping = metadataFieldMapping
@@ -496,12 +496,12 @@ function addSuiteDetails(suiteName, suiteResults, detailedResultTypes) {
         addDetailsWithCodeBlock(
           gha.summary,
           gha.summary.wrap("code", result.id),
-          result.msg
+          result.msg,
         );
       } else {
         gha.summary.addDetails(
           gha.summary.wrap("code", result.id),
-          "\n\n:heavy_check_mark: Passed"
+          "\n\n:heavy_check_mark: Passed",
         );
       }
     }
@@ -511,7 +511,7 @@ function addSuiteDetails(suiteName, suiteResults, detailedResultTypes) {
       const remainingCount = results_for_type.length - maxResults;
       gha.summary.addRaw(
         `\n\n> **Note:** ${remainingCount} more ${resultType} result(s) not shown. See full report in artifacts for complete details.`,
-        true
+        true,
       );
     }
   }
@@ -519,14 +519,14 @@ function addSuiteDetails(suiteName, suiteResults, detailedResultTypes) {
 
 function hasRelevantResults(suiteResults, detailedResultTypes) {
   return detailedResultTypes.some(
-    (type) => suiteResults[type] && suiteResults[type].length > 0
+    (type) => suiteResults[type] && suiteResults[type].length > 0,
   );
 }
 
 function addSummary(results, selectedResultTypes) {
   gha.summary.addRaw(
     `Ran ${results.total_tests} tests in ${prettyDuration(results.total_time)}`,
-    true
+    true,
   );
 
   var rows = [["Result", "Amount"]];
@@ -547,6 +547,6 @@ function addSummary(results, selectedResultTypes) {
 function addDetailsWithCodeBlock(summary, label, code) {
   return summary.addDetails(
     label,
-    "\n\n" + summary.wrap("pre", summary.wrap("code", code))
+    "\n\n" + summary.wrap("pre", summary.wrap("code", code)),
   );
 }
