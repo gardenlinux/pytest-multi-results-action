@@ -1,7 +1,7 @@
 # pytest-multi-results-action
 
-[![BSD-3-Clause License](https://img.shields.io/github/license/yeoldegrove/light-the-torch)](https://opensource.org/licenses/BSD-3-Clause)
-[![Project Status: WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+[![CI](https://github.com/gardenlinux/pytest-multi-results-action/actions/workflows/ci.yml/badge.svg)](https://github.com/gardenlinux/pytest-multi-results-action/actions/workflows/ci.yml)
+[![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
 JavaScript GitHub Action that surfaces pytest JUnit XML results in the workflow summary. Built for multi-suite pipelines (e.g., chroot, QEMU, cloud), with configurable columns and focused details.
 
@@ -28,7 +28,7 @@ Ensure pytest emits JUnit XML, then point the action at the files:
 
 - name: Test Report
   if: always()
-  uses: yeoldegrove/pytest-multi-results-action@main
+  uses: gardenlinux/pytest-multi-results-action@main
   with:
     files: |
       test-artifacts/**/results.xml
@@ -94,7 +94,7 @@ Notes:
 ```yaml
 - name: Test Report
   if: always()
-  uses: yeoldegrove/pytest-multi-results-action@main
+  uses: gardenlinux/pytest-multi-results-action@main
   with:
     files: test-artifacts/**/*.xml
     summary: true
@@ -108,7 +108,7 @@ Notes:
 ```yaml
 - name: Test Report (with metadata)
   if: always()
-  uses: yeoldegrove/pytest-multi-results-action@main
+  uses: gardenlinux/pytest-multi-results-action@main
   with:
     files: test-artifacts/**/*.xml
     title: "Test Results"
